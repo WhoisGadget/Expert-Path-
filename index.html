@@ -433,6 +433,72 @@ function updateMarkerCount(mId) {
   #cbanner{margin:16px 16px 0;background:linear-gradient(135deg,rgba(106,191,75,.2),rgba(106,191,75,.07));border:2px solid var(--green);border-radius:12px;padding:20px;text-align:center;display:none}
   #cbanner .ce{font-size:34px;margin-bottom:8px}
   #cbanner h2{font-size:24px;font-weight:900;color:var(--green);letter-spacing:1px}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Expert Path">
+<meta name="theme-color" content="#0a0e1a">
+<title>AT&amp;T Expert Path</title>
+<style>
+  :root {
+    --bg:#0a0e1a;--surface:#111827;--border:#1e2a40;
+    --text:#e8eaf0;--muted:#8892b0;--dim:#4a5580;
+    --green:#6ABF4B;
+    --safe-top:env(safe-area-inset-top,0px);
+    --safe-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{background:var(--bg);color:var(--text);font-family:'Helvetica Neue',Helvetica,sans-serif;min-height:100vh;overflow-x:hidden}
+  #header{position:sticky;top:0;z-index:100;padding:calc(var(--safe-top) + 14px) 16px 12px;border-bottom:4px solid #FF6900;transition:background .3s}
+  #header.m-install{background:linear-gradient(135deg,#00A8E0,#0055AA)}
+  #header.m-repair{background:linear-gradient(135deg,#c0392b,#7b0000)}
+  .eyebrow{font-size:10px;font-weight:700;letter-spacing:4px;color:rgba(255,255,255,.65);text-transform:uppercase;margin-bottom:3px}
+  #htitle{font-size:22px;font-weight:900;color:#fff;margin-bottom:10px;letter-spacing:.5px}
+  #mode-toggle{display:flex;background:rgba(0,0,0,.3);border-radius:8px;padding:3px;margin-bottom:10px;gap:3px}
+  .mbtn{flex:1;padding:8px 4px;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;color:rgba(255,255,255,.5);background:transparent;transition:all .2s}
+  .mbtn.active{background:rgba(255,255,255,.18);color:#fff}
+  .mbtn:active{opacity:.7}
+  #pw{display:flex;align-items:center;gap:10px}
+  #pbg{flex:1;height:8px;background:rgba(0,0,0,.25);border-radius:4px;overflow:hidden}
+  #pfill{height:100%;width:0%;background:#fff;border-radius:4px;transition:width .4s}
+  #plbl{font-size:13px;font-weight:700;color:#fff;white-space:nowrap}
+  #ppct{background:rgba(0,0,0,.25);color:#fff;font-weight:800;font-size:13px;padding:2px 8px;border-radius:4px;min-width:44px;text-align:center}
+  #install-tip{margin:12px 16px 0;background:rgba(0,168,224,.12);border:1px solid rgba(0,168,224,.4);border-radius:8px;padding:10px 14px;font-size:12px;color:rgba(0,168,224,.9);line-height:1.5;text-align:center;display:none}
+  .mwrap{margin:14px 16px 0}
+  .mbtnm{width:100%;background:none;border:2px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer;display:flex;align-items:center;text-align:left;color:var(--text)}
+  .mbtnm:active{opacity:.8}
+  .mico{width:40px;height:40px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;margin-right:12px}
+  .minf{flex:1}
+  .mey{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:2px}
+  .mtit{font-size:18px;font-weight:900;line-height:1.1;color:#fff}
+  .mmet{text-align:right;flex-shrink:0;margin-left:10px}
+  .mcnt{font-size:18px;font-weight:800}
+  .marr{font-size:12px;color:var(--dim);margin-top:3px}
+  .slist{background:var(--surface);border:1px solid;border-top:none;border-radius:0 0 10px 10px;overflow:hidden;display:none}
+  .slist.open{display:block}
+  .si{border-bottom:1px solid var(--border)}
+  .si:last-child{border-bottom:none}
+  .si.done{background:rgba(106,191,75,.05)}
+  .stop{display:flex;align-items:flex-start}
+  .sca{padding:14px;cursor:pointer;flex-shrink:0}
+  .cb{width:26px;height:26px;border:2px solid;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:all .15s;background:transparent}
+  .cb.chk{background:var(--green);border-color:var(--green)!important}
+  .ck{color:#fff;font-size:15px;font-weight:900;display:none}
+  .cb.chk .ck{display:block}
+  .sla{flex:1;padding:14px 14px 14px 0;cursor:pointer}
+  .snum{font-size:11px;font-weight:700;letter-spacing:1px;margin-bottom:2px}
+  .slbl{font-size:15px;font-weight:600;line-height:1.35;color:var(--text)}
+  .si.done .slbl{color:var(--muted);text-decoration:line-through}
+  .sei{font-size:11px;color:var(--dim);margin-top:4px}
+  .sdet{font-size:14px;line-height:1.65;color:var(--muted);padding:10px 14px 14px 54px;border-top:1px solid rgba(255,255,255,.05);display:none}
+  .sdet.open{display:block}
+  #cbanner{margin:16px 16px 0;background:linear-gradient(135deg,rgba(106,191,75,.2),rgba(106,191,75,.07));border:2px solid var(--green);border-radius:12px;padding:20px;text-align:center;display:none}
+  #cbanner .ce{font-size:34px;margin-bottom:8px}
+  #cbanner h2{font-size:24px;font-weight:900;color:var(--green);letter-spacing:1px}
   #cbanner p{font-size:13px;color:var(--muted);margin-top:6px}
   #rbtn{display:block;width:calc(100% - 32px);margin:14px 16px 0;background:transparent;border:1px solid var(--dim);color:var(--dim);font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:9px;border-radius:7px;cursor:pointer}
   #rbtn:active{background:rgba(255,255,255,.05)}
@@ -475,6 +541,57 @@ install:[
 ]},
 {id:2,title:"QUALIFY TO TERMINAL",color:"#FF6900",icon:"🔍",steps:[
 {l:"Check if job has Existing Optical Cross Connects (EOX)",d:"Look at your work order. If it's an F1 assignment with EOX already in place, you can skip the PFP step entirely and go straight to qualifying fiber at the terminal."},
+{l:"For Buried Plant: Find FST and test adjacent port with VFL",d:"Locate the FST buried near the property. Clean and TRUE Test the assigned port AND a spare port next to it to verify PFP distance. If distance looks good, place VFL on the spare port only. NEVER put the VFL on the assigned customer port."},
+{l:"For Aerial Plant or no spare ports: Go to the PFP",d:"If the plant is aerial (lines up on poles), or if there are no spare ports at the buried terminal, go directly to the PFP without doing the VFL test first."},
+{l:"At the PFP: Verify your assignments are correct",d:"Open the PFP and confirm the port assignments match your work order. Make sure you're working on the right fiber before touching anything."},
+{l:"Scope & clean the optimeter launch cable",d:"Before using your optimeter, inspect the launch cable connector under the fiber scope. Clean it if dirty. Repeat until the scope shows a clean connector face."},
+{l:"Scope & clean the bulkhead and jumper — repeat until passing",d:"Use your fiber scope to look at both the bulkhead connector and the jumper connector at the PFP. Clean any dirty connectors. Keep repeating — scope, clean, scope — until you see a clean pass on all connectors."},
+{l:"TRUE Test the bulkhead splitter toward the ONT",d:"Using your optimeter, perform a TRUE Test on the bulkhead in the direction toward the ONT. This confirms the fiber path is clear from the PFP onward."},
+{l:"Check the light level from the splitter with optimeter",d:"Measure the optical power coming out of the splitter port. Make sure the reading is within acceptable range. If it's too weak or too strong, resolve before continuing."},
+{l:"Connect the jumper — route it properly inside the PFP channels",d:"Connect the jumper to the correct port. Carefully route the jumper wire inside the designated cable channels in the PFP — neatly routed, not hanging loose or pinched."},
+{l:"Write the customer's address inside the PFP",d:"Using a permanent marker, write the customer's full address inside the PFP near the jumper. This helps future techs identify which port belongs to which address."},
+{l:"Check for and fix any Pulled Jumper (FPJ) SMS alerts immediately",d:"Check Atlas for any Fiber Pulled Jumper (FPJ) alerts for this PFP. Resolve them right now before moving on. Do not leave a PFP with an unresolved pulled jumper alert."},
+{l:"Cap all empty/vacant ports at the PFP",d:"Any port in the PFP NOT connected to a jumper should have a dust cap on it. Find any uncapped ports and put caps on them. Dust inside an open port will contaminate the fiber."},
+{l:"Verify TRUE Test and scope results are uploaded in Atlas",d:"Before leaving the PFP, open Atlas and confirm that your TRUE Test results and passing scope photos have been uploaded and saved to the job."},
+{l:"At the Terminal: Prep the site and clean the FST",d:"When you get to the FST, tidy up the work area around it. Wipe down or brush off any debris from the outside of the FST before opening it."},
+{l:"Clean the port at the FST with One-Click cleaner",d:"Always assume the port at the FST is dirty, even if it looks clean. Use a One-Click fiber cleaner to clean the port. You do NOT need to scope it first at this step — just clean it."},
+{l:"Verify there is light on the terminal port",d:"After cleaning, use your VFL or power meter to verify there is an active optical signal (light) on the assigned port at the terminal. No light = open a CORE helper ticket."},
+{l:"Geotag flowerpots and terminals in MarkIT app",d:"Use the MarkIT app to geotag (mark the GPS location of) any flowerpots and terminals you worked on. This makes them easier to find in the future."},
+{l:"Repair or report non-service-affecting facility issues in MarkIT",d:"If you spot any damage at the terminal that is NOT causing the customer's service to fail, report or repair it in the MarkIT app. This is a CODE behavior — not optional."}
+]},
+{id:3,title:"SURVEY CUSTOMER & PREMISES",color:"#6ABF4B",icon:"🏠",steps:[
+{l:"Inspect the outside of the home BEFORE going inside",d:"Walk around the outside of the home first. Look for obstacles, hazards, potential drop routing paths, where the NID should go, and how the fiber drop will travel from the street or pole to the house. Make your outside plan before stepping inside."},
+{l:"Put boot covers on before entering the home",d:"Every time you go inside the customer's home, put on boot covers (shoe covers) over your work boots. This is a CODE behavior — it is required every time, no exceptions."},
+{l:"Ask the customer how and where they use internet in the home",d:"Have a conversation with the customer. Ask them: Where do they watch TV? Where do they work from home? Do they game? Where is the busiest room? What devices do they have? This helps you decide where to put the gateway for the best Wi-Fi coverage."},
+{l:"Survey inside wiring limitations before Wi-Fi Assessment",d:"Before walking around with the gateway to test Wi-Fi, look at any existing inside wiring. Are there walls, floors, or cables that will limit where you can run new fiber? Make note of any constraints."},
+{l:"Perform Wi-Fi Assessment with a powered-up Gateway",d:"Connect the BGW gateway to power (but not to the fiber yet). Carry it through the home, room by room, and check Wi-Fi signal strength in each area. Use the Atlas Wi-Fi Assessment tool. Use simple terms — say 'signal strength' instead of 'RSSI reading.'"},
+{l:"Submit Wi-Fi Assessment results in Atlas",d:"After completing the walk-through, open Atlas and press 'Submit' to save and upload the Wi-Fi Assessment results. The data does not save until you hit submit."},
+{l:"Decide on best locations for Gateway, Fiber Jack, and Slack NID",d:"Using everything you learned from the customer interview, outside survey, and Wi-Fi Assessment results, pick the best locations for: (1) the Gateway, (2) the Fiber Jack, and (3) the Slack NID."},
+{l:"Explain your recommended Gateway location to the customer and WHY",d:"Tell the customer where you plan to put the gateway and explain your reasoning in plain language. Customers appreciate knowing the why behind your decisions."},
+{l:"Explain the proposed drop path to the customer",d:"Tell the customer exactly where the fiber wire will run from outside to inside. For buried drops, explain the route, where boring will happen, if the wire crosses driveways or hard surfaces, and how many days the wire might stay above ground before burial is complete."},
+{l:"If Wi-Fi coverage is poor in areas, offer EWCS extenders now",d:"If the Wi-Fi Assessment showed weak signal in certain rooms, talk to the customer about Wi-Fi extenders (EWCS) now. Bringing it up NOW — not at the end — gives them time to think it over without feeling pressured."},
+{l:"Give customer an estimated time of completion (ETC)",d:"Based on your plan, give the customer a realistic estimate of how long the full install will take. Then tell them you'll be going outside to finish the outdoor work first."},
+{l:"Update ETC in Atlas",d:"After giving the customer the estimate, open Atlas and update the ETC there as well. Keep Atlas in sync with what you told the customer."}
+]},
+{id:4,title:"EXTEND TO HOME",color:"#F5A623",icon:"📡",steps:[
+{l:"Install the Slack NID in the optimal location",d:"Mount the Slack NID at the location you decided on in Marker 3. Treat the customer's property carefully — drill cleanly, patch any unnecessary holes, and leave the mounting looking professional."},
+{l:"For Buried Plant: Route and mark the BSW (Buried Service Wire)",d:"Lay the buried fiber drop wire along the planned path. Mark the route with orange flagging tape. Pro tip: put all the tape pieces on the wire at once then slide them down to the correct spacing. Follow all local hand-digging requirements and use drop guard over hard surfaces."},
+{l:"For Buried Plant: Install the permanent drop, avoid bore if possible",d:"Install the final buried drop wire. Try to route it in a way that avoids boring under driveways or sidewalks if an alternate path exists. If boring is required, follow all boring procedures."},
+{l:"Use Sidekick to verify drop length and scan the drop tag",d:"Use the Sidekick app to measure and verify the drop wire length. Then scan the barcode/tag on the drop wire with Sidekick to record it. This documents the exact drop that was installed."},
+{l:"Tag the drop with the customer's address at the terminal",d:"Write the customer's address on a tag or label and attach it to the drop wire at the terminal end. This makes it easy for future techs to identify which drop belongs to which customer."},
+{l:"For Aerial Plant: Clean drop and connect to CFST on the pole",d:"If the plant is aerial (on poles), clean the drop connector before connecting it to the CFST. After connecting, attach the drop to the pole and coil any excess wire safely at the base of the pole."},
+{l:"Place connector on drop and scope & clean all connections at Slack NID",d:"Install the mechanical connector on the fiber drop wire end. Then scope and clean every connector at the Slack NID. Repeat (scope → clean → scope again) until every connection shows a clean, passing image."},
+{l:"Verify light and perform TRUE Test from drop toward splitter",d:"Using your optimeter, confirm there is optical light present at the Slack NID. Then perform a TRUE Test on the drop wire toward the PFP splitter. This confirms the full outside fiber path is working before you go inside."},
+{l:"Write install info inside the Slack NID",d:"Using a permanent marker, write inside the Slack NID lid: today's date, the UUID (work order number), the light level reading, and the distance from the NID to the PFP."},
+{l:"Clean up ALL trash in your outside work area",d:"Before moving inside, pick up every piece of trash in your work area outside. Cable scraps, packaging, flagging tape pieces, connector wrappers — everything. Leave the yard cleaner than you found it. This is a CODE behavior."},
+{l:"Update ETC in Atlas",d:"Open Atlas and update your estimated time of completion now that the outside work is done."},
+{l:"Complete Sidekick/SNAP BSW Process and take required photos in Atlas",d:"In Atlas, complete the Sidekick/SNAP BSW process. Take the required photos of the buried drop installation — start point, route, and end point — and upload them in Atlas."},
+{l:"Complete the BDR form in Atlas",d:"Fill out and submit the BDR (Buried Drop Record) form inside Atlas. This documents the buried drop installation officially in the AT&T system."},
+{l:"Verify TRUE Test and scope results are uploaded in Atlas",d:"Before going inside, confirm in Atlas that all TRUE Test results and passing scope photos from the Slack NID are uploaded and saved."}
+]},
+{id:5,title:"CONNECT TO GATEWAY",color:"#9B59B6",icon:"🔌",steps:[
+{l:"Put boot covers on before entering the home",d:"Every time you re-enter the home, put on fresh boot covers. This is required every entry — no exceptions."},
+{l:"Run pre-connectorized bend-insensitive Inside Wire (IW) to Fiber Jack location",d:"Route the pre-made fiber insidnal."},
 {l:"For Buried Plant: Find FST and test adjacent port with VFL",d:"Locate the FST buried near the property. Clean and TRUE Test the assigned port AND a spare port next to it to verify PFP distance. If distance looks good, place VFL on the spare port only. NEVER put the VFL on the assigned customer port."},
 {l:"For Aerial Plant or no spare ports: Go to the PFP",d:"If the plant is aerial (lines up on poles), or if there are no spare ports at the buried terminal, go directly to the PFP without doing the VFL test first."},
 {l:"At the PFP: Verify your assignments are correct",d:"Open the PFP and confirm the port assignments match your work order. Make sure you're working on the right fiber before touching anything."},
